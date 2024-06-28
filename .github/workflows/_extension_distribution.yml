@@ -167,7 +167,7 @@ jobs:
       - name: Setup Rust for manylinux (dtolnay/rust-toolchain doesn't work due to curl being old here)
         if: ${{ inputs.enable_rust && matrix.duckdb_arch == 'linux_amd64_gcc4' }}
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s --default-toolchain=1.76.0 -- -y
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain=1.76.0 
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       - name: Setup Ccache
