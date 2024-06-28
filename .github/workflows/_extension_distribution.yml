@@ -329,6 +329,10 @@ jobs:
           cd duckdb
           git checkout ${{ inputs.duckdb_version }}
 
+      - name: Install Ninja
+        run: |
+          choco install ninja
+
       - name: Setup Ccache
         uses: hendrikmuhs/ccache-action@main
         continue-on-error: true
