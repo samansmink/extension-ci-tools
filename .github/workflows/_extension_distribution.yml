@@ -265,10 +265,10 @@ jobs:
         with:
           toolchain: 1.76
 
-      - name: Install Rust cross compile dependency
-        if: ${{ inputs.enable_rust && matrix.osx_build_arch == 'x86_64'}}
-        run: |
-          rustup target add x86_64-apple-darwin
+#      - name: Install Rust cross compile dependency
+#        if: ${{ inputs.enable_rust && matrix.osx_build_arch == 'x86_64'}}
+#        run: |
+#          rustup target add x86_64-apple-darwin
 
       - name: Build extension
         shell: bash
