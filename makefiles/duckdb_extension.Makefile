@@ -29,10 +29,13 @@ OSX_BUILD_FLAG=
 ifneq (${OSX_BUILD_ARCH}, "")
 	OSX_BUILD_FLAG=-DOSX_BUILD_ARCH=${OSX_BUILD_ARCH}
 endif
-ifeq (${OSX_BUILD_ARCH}, "arm64")
+
+ifeq ("${OSX_BUILD_ARCH}", "arm64")
 	RUST_FLAGS=-DRust_CARGO_TARGET=aarch64-apple-darwin
-else ifeq (${OSX_BUILD_ARCH}, "x86_64")
+else ifeq ("${OSX_BUILD_ARCH}", "x86_64")
     RUST_FLAGS=-DRust_CARGO_TARGET=x86_64-apple-darwin
+else
+    RUST_FLAGS=FUCKYOU
 endif
 
 #### VCPKG config
