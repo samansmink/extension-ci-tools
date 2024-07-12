@@ -158,6 +158,11 @@ jobs:
       ###
       # Setup environment (TODO: this should ideally be part of a container image)
       ###
+      - name: Checkout DuckDB to version
+        run: |
+          echo '${{ format(';{0};', inputs.extra_toolchains) }}'
+          echo '${{ inputs.extra_toolchains }}'
+
       - name: Install required ubuntu packages
         if: ${{ matrix.duckdb_arch == 'linux_amd64' || matrix.duckdb_arch == 'linux_arm64' }}
         run: |
@@ -517,7 +522,7 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Setup Rust for cross compilation
+      - name: Setup Rust
         if: ${{ (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;'))}}
         uses: dtolnay/rust-toolchain@stable
         with:
