@@ -161,7 +161,7 @@ jobs:
       - name: Checkout DuckDB to version
         run: |
           echo '${{ format(';{0};', inputs.extra_toolchains) }}'
-          echo '${{ inputs.extra_toolchains }}'
+          echo '${{ contains(format(';{0};', inputs.extra_toolchains), ';rust;') }}'
 
       - name: Install required ubuntu packages
         if: ${{ matrix.duckdb_arch == 'linux_amd64' || matrix.duckdb_arch == 'linux_arm64' }}
