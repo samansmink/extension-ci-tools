@@ -12,16 +12,16 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  extension-template-main:
-    name: Extension template
-    uses: ./.github/workflows/_extension_distribution.yml
-    with:
-      extension_name: quack
-      override_repository: duckdb/extension-template
-      override_ref: main
-      duckdb_version: v1.0.0
-      override_ci_tools_repository: ${{ github.repository }}
-      override_ci_tools_ref: ${{ github.sha }}
+#  extension-template-main:
+#    name: Extension template
+#    uses: ./.github/workflows/_extension_distribution.yml
+#    with:
+#      extension_name: quack
+#      override_repository: duckdb/extension-template
+#      override_ref: main
+#      duckdb_version: v1.0.0
+#      override_ci_tools_repository: ${{ github.repository }}
+#      override_ci_tools_ref: ${{ github.sha }}
 
   delta-extension-main:
     name: Rust builds (using Delta extension)
