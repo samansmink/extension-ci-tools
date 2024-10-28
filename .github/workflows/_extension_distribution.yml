@@ -193,7 +193,7 @@ jobs:
 
   linux:
     name: Linux
-    runs-on: ${{ inputs.duckdb_arch == 'linux_arm64' && 'macos-latest' || 'ubuntu-latest' }}
+    runs-on: ${{ matrix.duckdb_arch == 'linux_arm64' && 'macos-latest' || 'ubuntu-latest' }}
     needs: generate_matrix
     if: ${{ needs.generate_matrix.outputs.linux_matrix != '{}' && needs.generate_matrix.outputs.linux_matrix != '' }}
     strategy:
