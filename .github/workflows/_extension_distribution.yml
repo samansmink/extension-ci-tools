@@ -256,6 +256,10 @@ jobs:
         run: |
           DUCKDB_TAG=${{ inputs.duckdb_tag }} make set_duckdb_tag
 
+      - name: Install docker
+        run: |
+          brew install docker
+
       - uses: actions/checkout@v4
         name: Checkout Extension CI tools
         with:
