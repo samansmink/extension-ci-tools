@@ -1,28 +1,20 @@
-FROM ubuntu:18.04
+FROM quay.io/pypa/manylinux2014_aarch64:latest
+
+RUN yum install -y epel-release -y pkgconfig
+
+# TODO do we need this?
+RUN git config --global --add safe.directory '*'
+
+# TODO do we need these?
+RUN yum install -y gcc-c++
+RUN yum install -y nodejs
 
 # Setup the basic necessities
-RUN apt-get update -y -qq
-RUN apt-get install -y -qq software-properties-common
-RUN apt-get install -y -qq --fix-missing ninja-build make gcc-multilib g++-multilib libssl-dev wget openjdk-8-jdk zip maven unixodbc-dev libc6-dev-i386 lib32readline6-dev libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip build-essential checkinstall libffi-dev curl libz-dev openssh-client pkg-config
-RUN apt-get install -y -qq ccache autoconf
-
-# Setup cross compiler because GH actions does not have open source arm runners yet
-RUN apt-get install -y -qq gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
-# Install cmake 3.21
-RUN mkdir /cmake_3_21 && \
-    cd /cmake_3_21 && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.21.3/cmake-3.21.3-linux-x86_64.sh && \
-    chmod +x cmake-3.21.3-linux-x86_64.sh && \
-    ./cmake-3.21.3-linux-x86_64.sh --skip-license --prefix=/usr/local && \
-    cmake --version
-
-# Install GIT
-RUN wget https://github.com/git/git/archive/refs/tags/v2.18.5.tar.gz && \
-    tar xvf v2.18.5.tar.gz && \
-    cd git-2.18.5 && \
-    make && \
-    make prefix=/usr install
+RUN yum install -y curl zip unzip tar autoconf
+RUN yum install -y ninja-build
+RUN yum install -y perl-IPC-Cmd
+RUN yum install -y ccache
+RUN yum install -y java-11-openjdk-devel maven
 
 # Setup VCPKG n a mounted volume TODO: figure out how to cache this
 ARG vcpkg_url
@@ -58,41 +50,30 @@ ENV CCACHE_MAXSIZE=400M
 # Note that it should start and end with a `;` e.g. `;rust;parser_tools;`
 ARG extra_toolchains
 
-# NOTE: the weird case conditionals are because of bash limitations in the ubuntu image used (see https://stackoverflow.com/questions/229551/how-to-check-if-a-string-contains-a-substring-in-bash)
+RUN echo "$extra_toolchains" > ~/extra_toolchains.txt
 
 # Install Parser tools
-RUN case "$extra_toolchains" in \
-  *\;parser_tools\;*) \
-    apt-get install -y -qq bison flex \
-  ;; \
-esac
-
-# Install Fortran
-RUN case "$extra_toolchains" in \
-  *\;fortran\;*) \
-    apt-get install -y -qq gfortran gfortran-aarch64-linux-gnu \
-  ;; \
-esac
+RUN if [[ $extra_toolchains == *";parser_tools;"* ]]; then \
+      yum install -y bison flex;\
+    fi
 
 # Configure Rust
+RUN if [[ $extra_toolchains == *";rust;"* ]] || [ "$enable_rust" = "1" ]; then \
+      curl https://sh.rustup.rs -sSf | bash -s -- -y ;\
+    fi
 ENV PATH="/root/.cargo/bin:${PATH}"
-RUN case "$extra_toolchains" in \
-  *\;rust\;*) \
-    curl https://sh.rustup.rs -sSf | bash -s -- -y; \
-    rustup target add aarch64-unknown-linux-gnu \
-  ;; \
-esac
 
 # Configure go
-RUN case "$extra_toolchains" in \
-  *\;go\;*) \
-    apt-get install -y -qq golang-go \
-  ;; \
-esac
+RUN if [[ $extra_toolchains == *";go;"* ]]; then \
+      yum install -y wget; \
+      wget https://go.dev/dl/go1.23.1.linux-amd64.tar.gz; \
+      tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz; \
+fi
+ENV PATH="/usr/local/go/bin:${PATH}"
 
 # Install Python3
 RUN case "$extra_toolchains" in \
   *\;python3\;*) \
-    apt-get install -y -qq python3 \
+    yum install -y python3; \
   ;; \
 esac

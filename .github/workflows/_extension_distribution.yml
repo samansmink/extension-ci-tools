@@ -193,7 +193,7 @@ jobs:
 
   linux:
     name: Linux
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.duckdb_arch == 'linux_arm64' && 'macos-latest' || 'ubuntu-latest' }}
     needs: generate_matrix
     if: ${{ needs.generate_matrix.outputs.linux_matrix != '{}' && needs.generate_matrix.outputs.linux_matrix != '' }}
     strategy:
@@ -283,7 +283,7 @@ jobs:
           echo "OPENSSL_DIR=/duckdb_build_dir/build/release/vcpkg_installed/${{ matrix.vcpkg_triplet }}" >> docker_env.txt
           echo "OPENSSL_USE_STATIC_LIBS=true" >> docker_env.txt
           echo "DUCKDB_PLATFORM=${{ matrix.duckdb_arch }}" >> docker_env.txt
-          echo "TOOLCHAIN_FLAGS=${{ matrix.duckdb_arch == 'linux_arm64' && '-DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran' || '' }}" >> docker_env.txt
+#          echo "TOOLCHAIN_FLAGS=${{ matrix.duckdb_arch == 'linux_arm64' && '-DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++ -DCMAKE_Fortran_COMPILER=aarch64-linux-gnu-gfortran' || '' }}" >> docker_env.txt
 
       - name: Generate timestamp for Ccache entry
         shell: cmake -P {0}
@@ -309,7 +309,7 @@ jobs:
           docker run --env-file=docker_env.txt -v `pwd`:/duckdb_build_dir -v `pwd`/ccache_dir:/ccache_dir duckdb/${{ matrix.duckdb_arch }} make release
 
       - name: Test extension
-        if: ${{ matrix.duckdb_arch != 'linux_arm64' && inputs.skip_tests == false }}
+        if: ${{ inputs.skip_tests == false }}
         run: |
           docker run --env-file=docker_env.txt -v `pwd`:/duckdb_build_dir -v `pwd`/ccache_dir:/ccache_dir duckdb/${{ matrix.duckdb_arch }} make test
 
