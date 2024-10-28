@@ -256,8 +256,11 @@ jobs:
         run: |
           DUCKDB_TAG=${{ inputs.duckdb_tag }} make set_duckdb_tag
 
-      - uses: docker-practice/actions-setup-docker@master
-        timeout-minutes: 12
+      - name: Install docker
+        run: |
+          brew install docker
+          open -a docker
+          sleep 10
 
       - uses: actions/checkout@v4
         name: Checkout Extension CI tools
