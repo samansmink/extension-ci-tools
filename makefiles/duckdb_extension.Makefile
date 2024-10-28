@@ -137,4 +137,4 @@ set_duckdb_tag:
 	cd duckdb && git tag $(DUCKDB_TAG)
 
 output_distribution_matrix:
-	cat duckdb/.github/config/distribution_matrix.json
+	cat .github/config/distribution_matrix.json
