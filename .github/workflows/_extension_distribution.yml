@@ -258,8 +258,8 @@ jobs:
 
       - name: Install docker
         run: |
-          brew install docker
-          open -a docker
+          brew install --cask docker
+          open -a Docker
           sleep 10
 
       - uses: actions/checkout@v4
