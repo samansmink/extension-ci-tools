@@ -9,7 +9,7 @@ RUN apk update --y -qq
 RUN apk add -qq ccache cmake git ninja ninja-build clang19 gcc libssl3 wget bash zip gettext unzip build-base curl make libffi-dev zlib openssh autoconf linux-headers libunwind-dev
 
 # Install the AWS cli, since the packaged version is too old
-RUN apk add "aws-cli=2.22.35"
+RUN apk add "aws-cli=2.22.35-r0"
 
 # Setup VCPKG n a mounted volume TODO: figure out how to cache this
 ARG vcpkg_url
