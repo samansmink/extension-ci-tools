@@ -12,6 +12,7 @@ RUN apk add -qq ccache cmake git ninja ninja-build clang19 gcc libssl3 wget bash
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.22.35.zip" -o "awscliv2.zip"
 RUN unzip -q awscliv2.zip
 RUN ./aws/install
+ENV PATH="/usr/local/bin:${PATH}"
 RUN aws --version
 
 # Setup VCPKG n a mounted volume TODO: figure out how to cache this
