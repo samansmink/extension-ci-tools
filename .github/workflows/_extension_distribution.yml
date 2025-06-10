@@ -845,7 +845,7 @@ jobs:
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.22.35.zip" -o "awscliv2.zip"
           unzip -q awscliv2.zip
-          ./aws/install --update
+          sudo ./aws/install --update
           aws --version
 
       - name: Run configure
