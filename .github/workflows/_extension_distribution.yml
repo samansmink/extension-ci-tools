@@ -512,6 +512,13 @@ jobs:
           echo "CPPFLAGS=-I/opt/homebrew/opt/libomp/include" >> $GITHUB_ENV
           echo "CXXFLAGS=-I/opt/homebrew/opt/libomp/include" >> $GITHUB_ENV
 
+      - name: Override AWS CLI
+        shell: bash
+        run: |
+          curl "https://awscli.amazonaws.com/AWSCLIV2-.github/workflows/_extension_distribution.yml.pkg" -o "AWSCLIV2.pkg"
+          sudo installer -pkg AWSCLIV2.pkg -target /
+          aws --version
+
       - name: Run configure
         shell: bash
         env:
@@ -582,6 +589,14 @@ jobs:
       GEN: ninja
 
     steps:
+      - name: Override AWS cli version
+        shell: powershell
+        run: |
+          Install-Script -Name winget-install -AcceptLicense -Confirm
+          winget uninstall -e --id Amazon.AWSCLI --silent --accept-source-agreements
+          winget install -e --id Amazon.AWSCLI --version 2.22.35 --silent --accept-source-agreements
+          aws --version
+
       - name: Keep \n line endings
         shell: bash
         run: |
@@ -679,14 +694,6 @@ jobs:
         with:
           vcpkgGitCommitId: ${{ inputs.vcpkg_commit }}
           vcpkgGitURL: ${{ inputs.vcpkg_url }}
-      
-      - name: Override AWS cli version
-        shell: powershell
-        run: |
-          Install-Script -Name winget-install
-          winget uninstall -e --id Amazon.AWSCLI --silent --accept-source-agreements
-          winget install -e --id Amazon.AWSCLI --version 2.22.35 --silent --accept-source-agreements
-          aws --version
 
       - name: Run configure
         shell: bash
