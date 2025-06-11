@@ -515,8 +515,8 @@ jobs:
       - name: Override AWS CLI
         shell: bash
         run: |
-          curl "https://awscli.amazonaws.com/AWSCLIV2-.github/workflows/_extension_distribution.yml.pkg" -o "AWSCLIV2.pkg"
-          sudo installer -pkg AWSCLIV2.pkg -target /
+          curl https://awscli.amazonaws.com/AWSCLIV2-.github/workflows/_extension_distribution.yml.pkg -o ./AWSCLIV2.pkg
+          sudo installer -pkg ./AWSCLIV2.pkg -target /
           aws --version
 
       - name: Run configure
@@ -592,7 +592,8 @@ jobs:
       - name: Override AWS cli version
         shell: powershell
         run: |
-          Install-Script -Name winget-install -AcceptLicense -Confirm
+          Install-Script -Name nuget -Force
+          Install-Script -Name winget -Force
           winget uninstall -e --id Amazon.AWSCLI --silent --accept-source-agreements
           winget install -e --id Amazon.AWSCLI --version 2.22.35 --silent --accept-source-agreements
           aws --version
