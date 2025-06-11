@@ -679,12 +679,23 @@ jobs:
         with:
           vcpkgGitCommitId: ${{ inputs.vcpkg_commit }}
           vcpkgGitURL: ${{ inputs.vcpkg_url }}
-
+      
       - name: Override AWS cli version
-        shell: cmd
+        shell: powershell
         run: |
-          winget uninstall -e --id Amazon.AWSCLI
-          winget install -e --id Amazon.AWSCLI --version 2.22.35
+          try {
+            $progressPreference = 'silentlyContinue'
+            $latestWinget = Invoke-WebRequest -Uri https://api.github.com/repos/microsoft/winget-cli/releases/latest
+            $wingetUrl = ($latestWinget.Content | ConvertFrom-Json).assets.browser_download_url | Where-Object { $_ -match 'msixbundle' }
+            Invoke-WebRequest -Uri $wingetUrl -OutFile winget.msixbundle
+            Add-AppxPackage -Path winget.msixbundle -ErrorAction Stop
+            Write-Host "Successfully installed Winget"
+          } catch {
+            Write-Error "Failed to install Winget: $_"
+            exit 1
+          }
+          winget uninstall -e --id Amazon.AWSCLI --silent --accept-source-agreements
+          winget install -e --id Amazon.AWSCLI --version 2.22.35 --silent --accept-source-agreements
           aws --version
 
       - name: Run configure
