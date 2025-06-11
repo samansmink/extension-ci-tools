@@ -592,10 +592,9 @@ jobs:
       - name: Override AWS cli version
         shell: powershell
         run: |
-          Install-Script -Name nuget -Force
-          Install-Script -Name winget -Force
-          winget uninstall -e --id Amazon.AWSCLI --silent --accept-source-agreements
-          winget install -e --id Amazon.AWSCLI --version 2.22.35 --silent --accept-source-agreements
+          $app = Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'AWS Command Line Interface%'"
+          if ($app) { $app.Uninstall() }
+          msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2-2.22.35.msi
           aws --version
 
       - name: Keep \n line endings
