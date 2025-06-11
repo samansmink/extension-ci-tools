@@ -683,8 +683,8 @@ jobs:
       - name: Override AWS cli version
         shell: cmd
         run: |
-          wmic product where name='AWS Command Line Interface' call uninstall /nointeractive
-          msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2-2.22.35.msi /quiet /norestart
+          winget uninstall -e --id Amazon.AWSCLI
+          winget install -e --id Amazon.AWSCLI --version 2.22.35
           aws --version
 
       - name: Run configure
