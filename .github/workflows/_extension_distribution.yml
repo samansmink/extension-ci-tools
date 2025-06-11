@@ -515,7 +515,7 @@ jobs:
       - name: Override AWS CLI
         shell: bash
         run: |
-          curl https://awscli.amazonaws.com/AWSCLIV2-.github/workflows/_extension_distribution.yml.pkg -o ./AWSCLIV2.pkg
+          curl https://awscli.amazonaws.com/AWSCLIV2-2.22.35.pkg -o ./AWSCLIV2.pkg
           sudo installer -pkg ./AWSCLIV2.pkg -target /
           aws --version
 
