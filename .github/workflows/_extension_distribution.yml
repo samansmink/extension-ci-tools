@@ -684,7 +684,8 @@ jobs:
             REM Rename link.exe to link-git.exe to avoid conflicts with git supplied linker.
             mv "C:\Program Files\Git\usr\bin\link.exe" "C:\Program Files\Git\usr\bin\link-git.exe"
             REM Find cl.exe and set CC/CXX environment variables
-            for /f "tokens=*" %%i in ('where cl.exe') do set CC=%%i& set CXX=%%i
+            echo CC is %CC%
+            echo CXX is %CXX%
           )
           echo CC is %CC%
           echo CXX is %CXX%
