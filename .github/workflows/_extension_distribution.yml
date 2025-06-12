@@ -677,6 +677,8 @@ jobs:
           EXTENSION_CANONICAL: ${{ inputs.extension_canonical }}
           DUCKDB_PLATFORM_RTOOLS: ${{ (matrix.duckdb_arch == 'windows_amd64_rtools' || matrix.duckdb_arch == 'windows_amd64_mingw') && 1 || 0 }}
           EXT_FLAGS: -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          CC: cl.exe
+          CXX: cl.exe
         shell: cmd
         run: |
           if "%DUCKDB_PLATFORM_RTOOLS%" == "0" (
