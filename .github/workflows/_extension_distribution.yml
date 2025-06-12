@@ -686,9 +686,18 @@ jobs:
             call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvarsall.bat x64"
             REM Rename link.exe to link-git.exe to avoid conflicts with git supplied linker.
             mv "C:\Program Files\Git\usr\bin\link.exe" "C:\Program Files\Git\usr\bin\link-git.exe"
-            REM Find cl.exe and set CC/CXX environment variables
-            echo CC is %CC%
-            echo CXX is %CXX%
+            where /q cl.exe
+            if %ERRORLEVEL% neq 0 (
+                echo Searching for cl.exe in common locations...
+                if exist "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\cl.exe" (
+                    set "PATH=C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64;%PATH%"
+                ) else if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64\cl.exe" (
+                    set "PATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64;%PATH%"
+                ) else (
+                    echo ERROR: Could not find cl.exe in expected locations
+                    exit /b 1
+                )
+            )
           )
           echo CC is %CC%
           echo CXX is %CXX%
