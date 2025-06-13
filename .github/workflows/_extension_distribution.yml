@@ -513,6 +513,7 @@ jobs:
           echo "CXXFLAGS=-I/opt/homebrew/opt/libomp/include" >> $GITHUB_ENV
 
       - name: Override AWS CLI
+        if: ${{ (contains(format(';{0};', inputs.extra_toolchains), ';downgraded_aws_cli;')) }}
         shell: bash
         run: |
           curl https://awscli.amazonaws.com/AWSCLIV2-2.22.35.pkg -o ./AWSCLIV2.pkg
@@ -589,11 +590,13 @@ jobs:
       GEN: ninja
 
     steps:
-      - name: Override AWS cli version
+      - name: Downgrade AWS cli
         shell: powershell
+        if: ${{ (contains(format(';{0};', inputs.extra_toolchains), ';downgraded_aws_cli;')) }}
         run: |
           $app = Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'AWS Command Line Interface%'"
           if ($app) { $app.Uninstall() }
+          sleep 60
           msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2-2.22.35.msi  /qn
 
       - name: Test AWS cli version
@@ -854,7 +857,8 @@ jobs:
           key: ${{ github.job }}-${{ matrix.duckdb_arch }}-${{ inputs.duckdb_version }}
           save: ${{ inputs.save_cache }}
 
-      - name: Override AWS cli version
+      - name: Downgrade AWS cli
+        if: ${{ (contains(format(';{0};', inputs.extra_toolchains), ';downgraded_aws_cli;')) }}
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.22.35.zip" -o "awscliv2.zip"
           unzip -q awscliv2.zip
