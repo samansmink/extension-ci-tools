@@ -25,6 +25,9 @@ jobs:
       extra_toolchains: 'parser_tools;fortran;omp;go;python3;downgraded_aws_cli;'
       save_cache: ${{ github.event_name != 'pull_request' }}
       vcpkg_binary_sources: ${{ github.event_name == 'push' && vars.VCPKG_BINARY_SOURCES || '' }}
+      upload_all_extensions_with_prefix: 'my_label'
+      extra_extension_config: >
+        duckdb_extension_load(json)
     secrets: inherit
 
   extension-template-capi:

@@ -139,6 +139,14 @@ on:
         required: false
         type: string
         default: "release"
+      upload_all_extensions_with_prefix:
+        required: false
+        type: string
+        default: ""
+      extra_extension_config:
+        required: false
+        type: string
+        default: ""
 
 env:
   VCPKG_BINARY_SOURCES: ${{inputs.vcpkg_binary_sources == '' && 'clear;http,https://vcpkg-cache.duckdb.org,read' || inputs.vcpkg_binary_sources }}
@@ -360,6 +368,13 @@ jobs:
             done
           fi
 
+      - name: Create extra extension config
+        if: ${{ inputs.extra_extension_config != '' }}
+        shell: bash
+        run: |
+          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
+          echo "EXTRA_EXTENSION_CONFIGS=/duckdb_build_dir/extra_extension.cmake" >> docker_env.txt
+
       - name: Run configure (inside Docker)
         shell: bash
         run: |
@@ -395,6 +410,13 @@ jobs:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.upload_all_extensions != '' }}
+        with:
+          name: all-extensions-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          path: |
+            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -519,6 +541,13 @@ jobs:
         run: |
           brew install bison flex
 
+      - name: Create extra extension config
+        if: ${{ inputs.extra_extension_config != '' }}
+        shell: bash
+        run: |
+          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
+          echo "EXTRA_EXTENSION_CONFIGS=$(pwd)/extra_extension.cmake" >> $GITHUB_ENV
+
       - name: install omp (x86)
         if: ${{ contains(format(';{0};', inputs.extra_toolchains), ';omp;') && matrix.duckdb_arch == 'osx_amd64' }}
         run: |
@@ -584,6 +613,13 @@ jobs:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.upload_all_extensions != '' }}
+        with:
+          name: all-extensions-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          path: |
+            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -737,6 +773,13 @@ jobs:
           vcpkgGitCommitId: ${{ inputs.vcpkg_commit }}
           vcpkgGitURL: ${{ inputs.vcpkg_url }}
 
+      - name: Create extra extension config
+        if: ${{ inputs.extra_extension_config != '' }}
+        shell: bash
+        run: |
+          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
+          echo "EXTRA_EXTENSION_CONFIGS=${{ github.workspace }}/extra_extension.cmake" >> $GITHUB_ENV
+
       - name: Run configure
         shell: bash
         env:
@@ -791,6 +834,13 @@ jobs:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.upload_all_extensions != '' }}
+        with:
+          name: all-extensions-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          path: |
+            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -913,6 +963,13 @@ jobs:
           sudo ./aws/install --update
           aws --version
 
+      - name: Create extra extension config
+        if: ${{ inputs.extra_extension_config != '' }}
+        shell: bash
+        run: |
+          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
+          echo "EXTRA_EXTENSION_CONFIGS=$(pwd)/extra_extension.cmake" >> $GITHUB_ENV
+
       - name: Run configure
         shell: bash
         env:
@@ -942,6 +999,13 @@ jobs:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ matrix.duckdb_arch }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension.wasm
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ inputs.upload_all_extensions != '' }}
+        with:
+          name: all-extensions-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          path: |
+            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
