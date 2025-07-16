@@ -777,7 +777,7 @@ jobs:
         if: ${{ inputs.extra_extension_config }}
         shell: cmd
         run: |
-          echo "${{ inputs.extra_extension_config }}" > ${{ github.workspace }}\extra_extension.cmake
+          echo ${{ inputs.extra_extension_config }} > ${{ github.workspace }}\extra_extension.cmake
           echo EXTRA_EXTENSION_CONFIGS=${{ github.workspace }}\extra_extension.cmake >> %GITHUB_ENV%
 
       - name: Run configure

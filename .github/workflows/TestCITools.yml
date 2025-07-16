@@ -28,4 +28,5 @@ jobs:
       upload_all_extensions_with_prefix: 'my_label'
       extra_extension_config: >
         duckdb_extension_load(json)
+        duckdb_extension_load(tpch)
     secrets: inherit
