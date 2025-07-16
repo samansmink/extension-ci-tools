@@ -144,10 +144,10 @@ on:
         required: false
         type: string
         default: "release"
-      upload_all_extensions_with_prefix:
+      upload_all_extensions:
         required: false
-        type: string
-        default: ""
+        type: boolean
+        default: false
       extra_extension_config:
         required: false
         type: string
@@ -416,15 +416,16 @@ jobs:
           make test_${{ inputs.build_type }}
 
       - uses: actions/upload-artifact@v4
+        if: ${{ !inputs.upload_all_extensions }}
         with:
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
       - uses: actions/upload-artifact@v4
-        if: ${{ inputs.upload_all_extensions_with_prefix != '' }}
+        if: ${{ inputs.upload_all_extensions }}
         with:
-          name: ${{ inputs.upload_all_extensions_with_prefix }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
@@ -623,6 +624,7 @@ jobs:
           make test_${{ inputs.build_type }}
 
       - uses: actions/upload-artifact@v4
+        if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
@@ -630,9 +632,9 @@ jobs:
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
       - uses: actions/upload-artifact@v4
-        if: ${{ inputs.upload_all_extensions_with_prefix != '' }}
+        if: ${{ inputs.upload_all_extensions }}
         with:
-          name: ${{ inputs.upload_all_extensions_with_prefix }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
@@ -851,6 +853,7 @@ jobs:
           make test_${{ inputs.build_type }}
 
       - uses: actions/upload-artifact@v4
+        if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
@@ -858,9 +861,9 @@ jobs:
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
 
       - uses: actions/upload-artifact@v4
-        if: ${{ inputs.upload_all_extensions_with_prefix != '' }}
+        if: ${{ inputs.upload_all_extensions }}
         with:
-          name: ${{ inputs.upload_all_extensions_with_prefix }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
@@ -1021,6 +1024,7 @@ jobs:
           EXTENSION_NAME=${{ inputs.extension_name }} EXTENSION_CANONICAL=${{ inputs.extension_canonical }} make ${{ matrix.duckdb_arch }}
 
       - uses: actions/upload-artifact@v4
+        if: ${{ !inputs.upload_all_extensions }}
         with:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
@@ -1028,9 +1032,9 @@ jobs:
             build/${{ matrix.duckdb_arch }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension.wasm
 
       - uses: actions/upload-artifact@v4
-        if: ${{ inputs.upload_all_extensions_with_prefix != '' }}
+        if: ${{ inputs.upload_all_extensions}}
         with:
-          name: ${{ inputs.upload_all_extensions_with_prefix }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
+          name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
 
