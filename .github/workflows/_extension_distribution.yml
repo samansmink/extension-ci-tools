@@ -657,14 +657,14 @@ jobs:
       GEN: ninja
 
     steps:
-      - name: Downgrade AWS cli
-        shell: powershell
-        if: ${{ (contains(format(';{0};', inputs.extra_toolchains), ';downgraded_aws_cli;')) }}
-        run: |
-          $app = Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'AWS Command Line Interface%'"
-          if ($app) { $app.Uninstall() }
-          msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2-2.22.35.msi  /qn
-          sleep 60
+#      - name: Downgrade AWS cli
+#        shell: powershell
+#        if: ${{ (contains(format(';{0};', inputs.extra_toolchains), ';downgraded_aws_cli;')) }}
+#        run: |
+#          $app = Get-WmiObject -Class Win32_Product -Filter "Name LIKE 'AWS Command Line Interface%'"
+#          if ($app) { $app.Uninstall() }
+#          msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2-2.22.35.msi  /qn
+#          sleep 60
 
       - name: Test AWS cli version
         shell: powershell
@@ -775,10 +775,10 @@ jobs:
 
       - name: Create extra extension config
         if: ${{ inputs.extra_extension_config != '' }}
-        shell: bash
-        run: |
-          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
-          echo "EXTRA_EXTENSION_CONFIGS=${{ github.workspace }}/extra_extension.cmake" >> $GITHUB_ENV
+        shell: cmd
+        run: | 
+          echo ${{ inputs.extra_extension_config }} > ./extra_extension.cmake 
+          echo "EXTRA_EXTENSION_CONFIGS=%CD%\extra_extension.cmake" >> %GITHUB_ENV%
 
       - name: Run configure
         shell: bash
