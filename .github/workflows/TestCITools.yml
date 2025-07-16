@@ -26,7 +26,7 @@ jobs:
       save_cache: ${{ github.event_name != 'pull_request' }}
       vcpkg_binary_sources: ${{ github.event_name == 'push' && vars.VCPKG_BINARY_SOURCES || '' }}
       upload_all_extensions_with_prefix: 'my_label'
-      extra_extension_config: >
+      extra_extension_config: |
         duckdb_extension_load(json)
         duckdb_extension_load(tpch)
     secrets: inherit
