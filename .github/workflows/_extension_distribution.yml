@@ -92,6 +92,11 @@ on:
         required: false
         type: string
         default: "duckdb/extension-ci-tools"
+      # Override the duckdb repository (for using this workflow from a DuckDB fork)
+      override_duckdb_repository:
+        required: false
+        type: string
+        default: ""
       # Pass extra toolchains
       #   available: (parser_tools, rust, fortran, omp, python3)
       extra_toolchains:
@@ -273,6 +278,11 @@ jobs:
           path: 'extension-ci-tools'
           ref: ${{ inputs.ci_tools_version }}
           repository: ${{ inputs.override_ci_tools_repository }}
+
+      - name: Fetch override repository
+        if: ${{inputs.override_duckdb_repository != ''}}
+        run: |
+          DUCKDB_GIT_REPOSITORY=${{ inputs.override_duckdb_repository }} make set_duckdb_repository
 
       - name: Checkout DuckDB to version
         if: ${{inputs.duckdb_version != ''}}
@@ -490,6 +500,11 @@ jobs:
           path: 'extension-ci-tools'
           ref: ${{ inputs.ci_tools_version }}
           repository: ${{ inputs.override_ci_tools_repository }}
+
+      - name: Fetch override repository
+        if: ${{inputs.override_duckdb_repository != ''}}
+        run: |
+          DUCKDB_GIT_REPOSITORY=${{ inputs.override_duckdb_repository }} make set_duckdb_repository
 
       - name: Checkout DuckDB to version
         if: ${{inputs.duckdb_version != ''}}
@@ -748,6 +763,13 @@ jobs:
           ref: ${{ inputs.ci_tools_version }}
           repository: ${{ inputs.override_ci_tools_repository }}
 
+      - name: Fetch override repository
+        if: ${{inputs.override_duckdb_repository != ''}}
+        env:
+          DUCKDB_GIT_REPOSITORY: ${{ inputs.override_duckdb_repository }}
+        run: |
+          make set_duckdb_repository
+
       - name: Checkout DuckDB to version
         if: ${{inputs.duckdb_version != ''}}
         env:
@@ -902,6 +924,11 @@ jobs:
           path: 'extension-ci-tools'
           ref: ${{ inputs.ci_tools_version }}
           repository: ${{ inputs.override_ci_tools_repository }}
+
+      - name: Fetch override repository
+        if: ${{inputs.override_duckdb_repository != ''}}
+        run: |
+          DUCKDB_GIT_REPOSITORY=${{ inputs.override_duckdb_repository }} make set_duckdb_repository
 
       - name: Checkout DuckDB to version
         if: ${{inputs.duckdb_version != ''}}
