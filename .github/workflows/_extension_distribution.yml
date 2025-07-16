@@ -429,7 +429,7 @@ jobs:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
-            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
+            build/${{ inputs.build_type }}/repository/**/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -639,7 +639,7 @@ jobs:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
-            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
+            build/${{ inputs.build_type }}/repository/**/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -869,7 +869,7 @@ jobs:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
-            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
+            build/${{ inputs.build_type }}/repository/**/*.duckdb_extension
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
@@ -1041,7 +1041,7 @@ jobs:
           if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
-            build/${{ matrix.duckdb_arch }}/extension/*/*.duckdb_extension.wasm
+            build/${{ matrix.duckdb_arch }}/repository/**/*.duckdb_extension.wasm
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
