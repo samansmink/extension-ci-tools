@@ -774,7 +774,7 @@ jobs:
           vcpkgGitURL: ${{ inputs.vcpkg_url }}
 
       - name: Create extra extension config
-        if: ${{ inputs.extra_extension_config != '' && matrix.duckdb_arch != 'windows_amd64_mingw' }}
+        if: ${{ inputs.extra_extension_config }}
         shell: bash
         run: |
           echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
