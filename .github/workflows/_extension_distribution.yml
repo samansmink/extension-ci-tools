@@ -775,10 +775,15 @@ jobs:
 
       - name: Create extra extension config
         if: ${{ inputs.extra_extension_config }}
+        shell: bash
+        run: |
+          echo "${{ inputs.extra_extension_config }}" > ./extra_extension.cmake
+
+      - name: Create extra extension config env var
+        if: ${{ inputs.extra_extension_config }}
         shell: cmd
         run: |
-          echo ${{ inputs.extra_extension_config }} > ${{ github.workspace }}\extra_extension.cmake
-          echo EXTRA_EXTENSION_CONFIGS=${{ github.workspace }}\extra_extension.cmake >> %GITHUB_ENV%
+          echo "EXTRA_EXTENSION_CONFIGS=${{ github.workspace }}/extra_extension.cmake" >> $GITHUB_ENV
 
       - name: Run configure
         shell: bash
