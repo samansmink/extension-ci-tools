@@ -418,6 +418,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !inputs.upload_all_extensions }}
         with:
+          if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/${{ inputs.extension_name }}/${{ inputs.extension_name }}.duckdb_extension
@@ -425,6 +426,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_all_extensions }}
         with:
+          if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
@@ -634,6 +636,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_all_extensions }}
         with:
+          if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
@@ -863,6 +866,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_all_extensions }}
         with:
+          if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
             build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
@@ -1034,9 +1038,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ inputs.upload_all_extensions}}
         with:
+          if-no-files-found: error
           name: ${{ inputs.extension_name }}-${{ inputs.duckdb_version }}-extension-${{matrix.duckdb_arch}}${{inputs.artifact_postfix}}
           path: |
-            build/${{ inputs.build_type }}/extension/*/*.duckdb_extension
+            build/${{ matrix.duckdb_arch }}}/extension/*/*.duckdb_extension.wasm
 
       - name: Print Rust logs
         if: ${{ inputs.rust_logs && (inputs.enable_rust || contains(format(';{0};', inputs.extra_toolchains), ';rust;')) }}
