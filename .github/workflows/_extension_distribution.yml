@@ -384,7 +384,7 @@ jobs:
         env:
           EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
+          echo -e "\n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure (inside Docker)
@@ -567,7 +567,7 @@ jobs:
         env:
           EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
+          echo -e "\n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: install omp (x86)
@@ -810,7 +810,7 @@ jobs:
         env:
           EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
+          echo -e "\n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure
@@ -1009,7 +1009,7 @@ jobs:
         env:
           EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
+          echo -e "\n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure
