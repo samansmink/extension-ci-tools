@@ -381,8 +381,10 @@ jobs:
       - name: Inject extra extension config
         if: ${{ inputs.extra_extension_config }}
         shell: bash
+        env:
+          EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e "\n# Injected Extension Config\n${{ inputs.extra_extension_config }}" >> ./extension_config.cmake
+          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure (inside Docker)
@@ -562,8 +564,10 @@ jobs:
       - name: Inject extra extension config
         if: ${{ inputs.extra_extension_config }}
         shell: bash
+        env:
+          EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e "\n# Injected Extension Config\n${{ inputs.extra_extension_config }}" >> ./extension_config.cmake
+          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: install omp (x86)
@@ -803,8 +807,10 @@ jobs:
       - name: Inject extra extension config
         if: ${{ inputs.extra_extension_config }}
         shell: bash
+        env:
+          EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e "\n# Injected Extension Config\n${{ inputs.extra_extension_config }}" >> ./extension_config.cmake
+          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure
@@ -1000,8 +1006,10 @@ jobs:
       - name: Inject extra extension config
         if: ${{ inputs.extra_extension_config }}
         shell: bash
+        env:
+          EXTENSION_CONFIG: ${{ inputs.extra_extension_config }}
         run: |
-          echo -e "\n# Injected Extension Config\n${{ inputs.extra_extension_config }}" >> ./extension_config.cmake
+          echo -e \n# Injected Extension Config\n$EXTENSION_CONFIG" >> ./extension_config.cmake
           cat ./extension_config.cmake
 
       - name: Run configure
