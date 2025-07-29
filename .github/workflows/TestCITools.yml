@@ -72,6 +72,7 @@ jobs:
       extra_toolchains: 'rust'
       save_cache: ${{ github.event_name != 'pull_request' }}
       vcpkg_binary_sources: ${{ github.event_name == 'push' && vars.VCPKG_BINARY_SOURCES || '' }}
+      test_archs_only: false
     secrets: inherit
 
   code-quality:
