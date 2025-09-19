@@ -37,7 +37,6 @@ jobs:
       ci_tools_version: ${{ github.sha }}
       extra_toolchains: 'python3'
       save_cache: ${{ github.event_name != 'pull_request' }}
-      reduced_ci_mode: ${{ github.event_name }}
 
 #
 #  extension-template-main:
